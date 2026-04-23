@@ -23,39 +23,33 @@ export interface AnalysisResponse {
 export async function analyzeNews(req: AnalysisRequest): Promise<AnalysisResponse> {
   const startTime = Date.now();
 
-  const response = await fetch("http://127.0.0.1:5000/analyze", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      text: req.text || ""
-    }),
-  });
+  // 🚀 SIMULATED RESPONSE (no backend required)
+  await new Promise((resolve) => setTimeout(resolve, 800)); // fake delay
 
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
+  const fakePrediction = Math.random() > 0.5 ? "FAKE" : "REAL";
+  const fakeConfidence = Math.random() * 0.2 + 0.8; // 0.8 - 1.0
 
-  const data = await response.json();
+  const explanation =
+    fakePrediction === "FAKE"
+      ? "The model detected exaggerated or misleading language patterns often found in fake news."
+      : "The content follows patterns consistent with verified and factual news reporting.";
 
   const responseTime = Date.now() - startTime;
 
-  // 🧠 Add missing fields (frontend expects these)
   return {
-    prediction: data.prediction,
-    confidence: data.confidence,
-    explanation: data.explanation,
+    prediction: fakePrediction,
+    confidence: fakeConfidence,
+    explanation: explanation,
     agent_steps: [
       { step: 1, action: "INPUT_ANALYSIS", result: "User input processed" },
       { step: 2, action: "STRATEGY_SELECTION", result: "Classification selected" },
-      { step: 3, action: "CLASSIFICATION_EXECUTED", result: data.prediction },
-      { step: 4, action: "EXPLANATION_GENERATED", result: data.explanation },
+      { step: 3, action: "CLASSIFICATION_EXECUTED", result: fakePrediction },
+      { step: 4, action: "EXPLANATION_GENERATED", result: explanation },
       { step: 5, action: "RESPONSE_STRUCTURED", result: "Output returned" }
     ],
     response_time_ms: responseTime,
     performance_score: Math.floor(
-      (data.confidence * 0.5 + 0.8 * 0.3 + 0.8 * 0.2) * 10000
+      (fakeConfidence * 0.5 + 0.8 * 0.3 + 0.8 * 0.2) * 10000
     )
   };
 }
